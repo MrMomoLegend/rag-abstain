@@ -1,0 +1,11 @@
+qid,category,expected,question,references,key_terms,gold_sources,notes
+T01,answerable,answer,Which researchers is the CYK algorithm named after?,John Cocke Daniel Younger and Tadao Kasami|Cocke Younger Kasami,Cocke;Younger;Kasami,CYK algorithm.txt,answered
+T02,answerable,answer,When was GPT-4 released?,"March 14, 2023",March 14|14 March;2023,GPT-4.txt,answered
+T03,answerable,answer,What does TF-IDF stand for?,term frequency-inverse document frequency,term;document frequency,Tf-idf.txt,answered
+T04,answerable,answer,How is tf-idf weighting calculated?,the product of term frequency and inverse document frequency,product,Tf-idf.txt,hedged: refusal sentence then an answer
+T05,answerable,answer,Who introduced the Transformer architecture?,Vaswani et al.|Vaswani and colleagues at Google,Vaswani|Google,Transformer (deep learning architecture).txt,wrong answer
+T06,related_unanswerable,decline,How much did it cost to train GPT-4?,,,,declined by the model below the gate
+T07,related_unanswerable,decline,How many parameters does GPT-4 have?,,,,unsupported answer below the gate
+T08,out_of_corpus,decline,What is the capital of Brazil?,,,,declined by the gate; answered with the gate off
+T09,out_of_corpus,decline,Who won the 2018 FIFA World Cup?,,,,unknown to the toy system: declined by the gate
+T10,answerable,answer,What is the BLEU score used for?,evaluating machine translation,machine translation,BLEU.txt,false decline at the gate (nearest 0.58)

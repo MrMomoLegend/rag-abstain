@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rag-abstain"
+dynamic = ["version"]
+description = "Refusal-aware evaluation for RAG systems: does your RAG system know when to say no?"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+authors = [{ name = "Mokith Maheshkumar" }]
+dependencies = [
+    "pydantic>=2.10",
+    "typer>=0.15",
+    "httpx>=0.28",
+    "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+plot = ["matplotlib"]
+
+[project.scripts]
+rag-abstain = "rag_abstain.cli:app"
+
+[project.urls]
+Repository = "https://github.com/MrMomoLegend/rag-abstain"
+
+[tool.hatch.version]
+path = "src/rag_abstain/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_abstain"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.format]
+exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

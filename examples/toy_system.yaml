@@ -1,0 +1,9 @@
+# Deterministic fake RAG system (examples/toy_system.py): no network, used by tests and the
+# quickstart. For a gate-off run (needed by `rag-abstain sweep`), set use_threshold: false.
+name: toy-gate-0.53
+adapter: python
+target: toy_system:answer_question
+pythonpath: .                   # resolved relative to this file, so it points at examples/
+params: {use_threshold: true}
+response_map: demo
+refusal_text: "The provided documents do not contain this information."
