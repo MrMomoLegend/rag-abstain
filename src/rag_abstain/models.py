@@ -96,5 +96,6 @@ class RunManifest(BaseModel):
     dataset_path: str
     dataset_sha256: str
     repeats: int = Field(ge=1)
+    limit: int | None = Field(default=None, ge=1)
     classifier: dict[str, Any]
     python_version: str

@@ -54,6 +54,10 @@ class Classifier(Protocol):
         """Label one answer."""
         ...
 
+    def config(self) -> dict[str, Any]:
+        """Describe this classifier for the run manifest."""
+        ...
+
 
 class RuleClassifier:
     """Keyword classifier: refusal markers, then a hedge check on the text that follows."""
