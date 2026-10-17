@@ -1,9 +1,12 @@
 """The run loop (DESIGN section 9): ask every question R times and write records as they come.
 
 A run directory holds `manifest.json` and an append-only `records.jsonl`, one line per
-(qid, repeat), flushed to disk after every record, so a crash loses at most the call in flight.
-Resuming a run skips the pairs already written. Any exception raised by the system becomes an
-`error` record. Everything written is scrubbed of secret values read from the environment.
+(qid, repeat) attempt, flushed to disk after every record, so a crash loses at most the call in
+flight. Resuming a run skips pairs that already have a result and retries pairs whose latest
+record is an error (a quota hit or an outage); the retry is appended, the old error line stays
+as history, and the latest record for a pair is the one that counts. Any exception raised by
+the system becomes an `error` record. Everything written is scrubbed of secret values read from
+the environment.
 """
 
 import json
@@ -36,13 +39,19 @@ class RunError(Exception):
 
 @dataclass
 class RunResult:
-    """What a run produced. `records` is every record in the run directory, old and new."""
+    """What a run produced.
+
+    `records` is the latest record for every (qid, repeat) in the run directory, old and new.
+    `new` counts calls made by this invocation, of which `retried` were retries of pairs whose
+    latest record was an error; `skipped` counts pairs that already had a non-error result.
+    """
 
     run_dir: Path
     manifest: RunManifest
     records: list[Record]
     new: int
     skipped: int
+    retried: int = 0
 
     @property
     def errors(self) -> int:
@@ -57,14 +66,24 @@ def run_id_for(name: str, created_at: datetime) -> str:
 
 
 def read_records(run_dir: str | Path) -> list[Record]:
-    """Read records.jsonl. An unterminated last line (a write cut off by a crash) is ignored."""
+    """Read records.jsonl, keeping the latest record for each (qid, repeat).
+
+    A pair has more than one line when an error was retried on resume; the later line wins and
+    takes the earlier one's place in the order. An unterminated last line (a write cut off by a
+    crash) is ignored.
+    """
     path = Path(run_dir) / RECORDS_FILE
     if not path.exists():
         return []
     text = path.read_text(encoding="utf-8")
     lines = text.split("\n")
     complete = lines[:-1]  # the last piece is "" if the file ends in a newline, else partial
-    return [Record.model_validate_json(line) for line in complete if line.strip()]
+    latest: dict[tuple[str, int], Record] = {}
+    for line in complete:
+        if line.strip():
+            record = Record.model_validate_json(line)
+            latest[(record.qid, record.repeat)] = record
+    return list(latest.values())
 
 
 def read_manifest(run_dir: str | Path) -> RunManifest:
@@ -195,8 +214,9 @@ def run(
 
     Asks the first `limit` questions (all if None) `repeats` times, repeat 1 for every question
     before repeat 2. With `resume`, appends to that run directory, skipping (qid, repeat) pairs
-    already recorded; `repeats` then defaults to the run's and may only grow, and the system,
-    dataset and classifier must match the manifest. `workers` > 1 asks questions in parallel
+    that already have a non-error result and retrying pairs whose latest record is an error;
+    `repeats` then defaults to the run's and may only grow, and the system, dataset and
+    classifier must match the manifest. `workers` > 1 asks questions in parallel
     threads. The default classifier is RuleClassifier with the system's refusal_text.
     The caller owns `system` and closes it.
     """
@@ -239,18 +259,24 @@ def run(
         system.secrets.scrub(manifest.model_dump_json(indent=2)) + "\n", encoding="utf-8"
     )
 
-    records = read_records(run_dir)
-    done = {(r.qid, r.repeat) for r in records}
+    latest = {(r.qid, r.repeat): r for r in read_records(run_dir)}
     todo = [
-        (q, rep) for rep in range(1, repeats + 1) for q in questions if (q.qid, rep) not in done
+        (q, rep)
+        for rep in range(1, repeats + 1)
+        for q in questions
+        if (q.qid, rep) not in latest or latest[(q.qid, rep)].outcome == "error"
     ]
+    retried = sum((q.qid, rep) in latest for q, rep in todo)
     skipped = len(questions) * repeats - len(todo)
+
+    def keep(record: Record) -> None:
+        latest[(record.qid, record.repeat)] = record
 
     with (run_dir / RECORDS_FILE).open("a", encoding="utf-8", newline="\n") as fh:
         writer = _Writer(fh, system.secrets.scrub)
         if workers == 1:
             for q, rep in todo:
-                records.append(writer.write(evaluate(system.adapter, q, rep, classifier)))
+                keep(writer.write(evaluate(system.adapter, q, rep, classifier)))
         else:
             with ThreadPoolExecutor(max_workers=workers) as pool:
                 futures = [
@@ -258,9 +284,11 @@ def run(
                 ]
                 try:
                     for future in as_completed(futures):
-                        records.append(writer.write(future.result()))
+                        keep(writer.write(future.result()))
                 except BaseException:
                     pool.shutdown(cancel_futures=True)
                     raise
 
-    return RunResult(run_dir, manifest, records, new=len(todo), skipped=skipped)
+    return RunResult(
+        run_dir, manifest, list(latest.values()), new=len(todo), skipped=skipped, retried=retried
+    )

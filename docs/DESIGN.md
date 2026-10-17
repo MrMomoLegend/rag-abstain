@@ -284,14 +284,18 @@ a different question set before it is reported as a result. Optional plot with t
 runs/2026-10-19T1530_demo-gate-0.53/
   manifest.json     run id, created_at, harness version, system config (secrets removed),
                     dataset path + SHA-256, repeats, classifier config, python version
-  records.jsonl     one line per (qid, repeat): question, expected, category, response, outcome, scores
+  records.jsonl     one line per (qid, repeat) attempt: question, expected, category, response,
+                    outcome, scores
   summary.json      every metric in section 7
   report.md         human-readable tables
 ```
 
-- **Resumable:** re-running with `--resume <run_dir>` skips (qid, repeat) pairs already in
-  `records.jsonl`. Records are appended and flushed one at a time, so a crash or a provider quota
-  loses at most one call.
+- **Resumable:** re-running with `--resume <run_dir>` skips (qid, repeat) pairs that already
+  have a non-error result in `records.jsonl` and retries pairs whose latest record is an
+  `error` (a provider quota or an outage). A retry is appended; the old error line stays in the
+  file as history, and the latest record for a pair is the one every metric and report uses.
+  Records are appended and flushed one at a time, so a crash or a provider quota loses at most
+  one call.
 - **Workers:** `--workers 1` by default (quota-friendly); thread pool when higher.
 - **Compare:** `rag-abstain compare <runA> <runB>` prints metric deltas and every question whose
   outcome changed, with both answers truncated to 200 characters. This replaces hand-written
@@ -368,7 +372,8 @@ Required cases:
 - retrieval: duplicates in sources, basename matching, k larger than the list;
 - determinism: identical, text-differs-same-outcome, outcome flip;
 - sweep: synthetic distances with a known margin and a known best threshold;
-- runner: resume skips done pairs; a raising system becomes an `error` record, not a crash;
+- runner: resume skips done pairs and retries error pairs, with the latest record winning; a
+  raising system becomes an `error` record, not a crash;
   secrets from `${ENV}` never appear in `manifest.json`;
 - CLI: `run` -> `report` -> `compare` end to end on the toy system with typer's `CliRunner`.
 

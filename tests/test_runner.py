@@ -119,6 +119,38 @@ def test_resume_skips_done_pairs(toy: System, tmp_path: Path) -> None:
     assert read_manifest(first.run_dir).limit is None
 
 
+def test_resume_retries_error_pairs_and_the_latest_record_wins(tmp_path: Path) -> None:
+    down = {"T02", "T05"}
+
+    def quota(question: Question) -> SystemResponse:
+        if question.qid in down:
+            raise RuntimeError("HTTP 429: quota exceeded")
+        return SystemResponse(answer=f"Answer to {question.qid}.")
+
+    counting = Counting(quota)
+    first = run(fake_system(counting), DATASET, out_dir=tmp_path, now=NOW)
+    assert first.errors == 2
+
+    down = {"T05"}  # the quota is back for T02; T05 still fails
+    counting.asked.clear()
+    again = run(fake_system(counting), DATASET, resume=first.run_dir)
+    assert counting.asked == ["T02", "T05"]
+    assert (again.new, again.retried, again.skipped, again.errors) == (2, 2, 8, 1)
+
+    history = [(line["qid"], line["outcome"]) for line in lines(first.run_dir)]
+    assert len(history) == 12  # old error lines are kept, retries appended
+    assert history[-2:] == [("T02", "answered"), ("T05", "error")]
+
+    records = read_records(first.run_dir)
+    assert [r.qid for r in records] == [f"T{i:02d}" for i in range(1, 11)]
+    assert records[1].outcome == "answered" and records[4].outcome == "error"
+    assert records == again.records
+
+    down = set()
+    final = run(fake_system(counting), DATASET, resume=first.run_dir)
+    assert (final.new, final.retried, final.errors) == (1, 1, 0)
+
+
 def test_resume_can_add_a_repeat(toy: System, tmp_path: Path) -> None:
     first = run(toy, DATASET, out_dir=tmp_path, now=NOW)
     more = run(toy, DATASET, repeats=2, resume=first.run_dir)
