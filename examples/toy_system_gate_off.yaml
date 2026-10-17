@@ -1,0 +1,10 @@
+# The toy system with its distance gate off: every question reaches the "model", so the run
+# records an answer and the nearest distance for each one. This is the run `rag-abstain sweep`
+# needs to replay the gate offline at any threshold.
+name: toy-gate-off
+adapter: python
+target: toy_system:answer_question
+pythonpath: .                   # resolved relative to this file, so it points at examples/
+params: {use_threshold: false}
+response_map: demo
+refusal_text: "The provided documents do not contain this information."

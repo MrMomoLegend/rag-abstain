@@ -309,7 +309,7 @@ rag-abstain run --system SYSTEM.yaml --dataset DATASET [--repeats 1] [--workers 
                 [--limit N] [--out runs/] [--resume RUN_DIR] [--classifier rules|judge]
 rag-abstain report RUN_DIR [--format md|json]
 rag-abstain compare RUN_A RUN_B [--format md|json]
-rag-abstain sweep RUN_DIR [--grid 0.20:1.20:0.05] [--plot out.png]
+rag-abstain sweep RUN_DIR [--grid 0.20:1.20:0.05] [--plot out.png] [--format md|json]
 rag-abstain agreement RUN_DIR [--human labels.csv]          (after the core)
 ```
 
@@ -354,7 +354,7 @@ rag-abstain/
   README.md  CHANGELOG.md  LICENSE (MIT)  .github/workflows/ci.yml
 ```
 
-**Dependencies:** core `pydantic>=2.10`, `typer>=0.15`, `httpx>=0.28`, `pyyaml>=6`. Extras:
+**Dependencies:** core `pydantic>=2.10`, `typer>=0.27` (it bundles its own click; the CLI exit codes rely on that), `httpx>=0.28`, `pyyaml>=6`. Extras:
 `plot` = `matplotlib`; `dev` = `pytest`, `ruff`. No pandas, no LLM SDKs, no torch in the core.
 Python 3.11+ (CI on 3.11, 3.12, 3.13).
 

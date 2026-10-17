@@ -13,7 +13,7 @@ requires-python = ">=3.11"
 authors = [{ name = "Mokith Maheshkumar" }]
 dependencies = [
     "pydantic>=2.10",
-    "typer>=0.15",
+    "typer>=0.27",
     "httpx>=0.28",
     "pyyaml>=6",
 ]
@@ -23,7 +23,7 @@ dev = ["pytest", "ruff"]
 plot = ["matplotlib"]
 
 [project.scripts]
-rag-abstain = "rag_abstain.cli:app"
+rag-abstain = "rag_abstain.cli:main"
 
 [project.urls]
 Repository = "https://github.com/MrMomoLegend/rag-abstain"
