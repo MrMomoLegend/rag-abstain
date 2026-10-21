@@ -128,19 +128,26 @@ def _format_error(line_no: int, row: dict[str, Any], exc: ValidationError) -> li
 def validate_dataset(path: str | Path) -> DatasetReport:
     """Read and check a question set.
 
-    Errors: unreadable format, missing required columns, invalid rows (empty qid or question,
-    `expected` not `answer`/`decline`), duplicate qids, no questions at all.
+    Errors: unreadable file or format, missing required columns, invalid rows (empty qid or
+    question, `expected` not `answer`/`decline`), duplicate qids, no questions at all.
     Warnings: `expected = answer` rows with neither `references` nor `key_terms`; unknown fields.
     """
     path = Path(path)
     report = DatasetReport(path=path)
     suffix = path.suffix.lower()
-    if suffix in CSV_SUFFIXES:
-        rows = _read_csv(path, report)
-    elif suffix in JSONL_SUFFIXES:
-        rows = _read_jsonl(path, report)
-    else:
-        report.errors.append(f"unsupported file type '{path.suffix}' (use .csv or .jsonl)")
+    try:
+        if suffix in CSV_SUFFIXES:
+            rows = _read_csv(path, report)
+        elif suffix in JSONL_SUFFIXES:
+            rows = _read_jsonl(path, report)
+        else:
+            report.errors.append(f"unsupported file type '{path.suffix}' (use .csv or .jsonl)")
+            return report
+    except OSError as exc:
+        report.errors.append(f"cannot read file: {exc.strerror or exc}")
+        return report
+    except UnicodeDecodeError:
+        report.errors.append("cannot read file: not valid UTF-8")
         return report
 
     seen: dict[str, int] = {}

@@ -141,6 +141,17 @@ def test_unsupported_suffix_is_an_error(tmp_path: Path) -> None:
     assert not report.ok and "unsupported file type" in report.errors[0]
 
 
+def test_missing_file_is_an_error(tmp_path: Path) -> None:
+    report = validate_dataset(tmp_path / "absent.csv")
+    assert not report.ok and report.errors[0].startswith("cannot read file")
+
+
+def test_non_utf8_file_is_an_error(tmp_path: Path) -> None:
+    path = tmp_path / "q.csv"
+    path.write_bytes(b"qid,question,expected\nQ1,caf\xe9?,answer\n")
+    assert validate_dataset(path).errors == ["cannot read file: not valid UTF-8"]
+
+
 def test_load_dataset_raises_with_all_errors(tmp_path: Path) -> None:
     text = "qid,question,expected\nA,,answer\nB,q,maybe\n"
     with pytest.raises(DatasetError) as info:

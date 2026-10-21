@@ -142,6 +142,7 @@ def test_validate_dataset(tmp_path: Path) -> None:
     [
         ["run", "--dataset", DATASET],  # missing --system
         ["run", "--system", GATE_ON, "--dataset", DATASET, "--workers", "0"],
+        ["validate-dataset", "no/such/dataset.csv"],
         ["report", "no/such/run/dir"],
         ["sweep", "."],  # a directory, but not a run
         ["no-such-command"],
