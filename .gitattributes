@@ -1,0 +1,3 @@
+# Question sets are hashed byte for byte into every run manifest, so keep them LF on every OS.
+*.csv text eol=lf
+*.jsonl text eol=lf
