@@ -1,0 +1,11 @@
+# rag-assistant-demo with its retrieval-distance gate on at 0.53, the FYP/demo configuration
+# (DESIGN section 13, system 3). Needs a local checkout of rag-assistant-demo next to this repo,
+# its requirements installed in the active environment, and LLM_BASE_URL / LLM_API_KEY set for
+# its generation call. Model, temperature (0) and seed (42) come from the demo's rag/config.py.
+name: demo-gate-0.53
+adapter: python
+target: rag.pipeline:answer_question
+pythonpath: ../../rag-assistant-demo   # resolved relative to this file
+params: {use_rag: true, use_threshold: true, threshold: 0.53}
+response_map: demo
+refusal_text: "The provided documents do not contain this information."

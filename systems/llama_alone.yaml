@@ -1,0 +1,13 @@
+# Llama 3.1 8B alone, the no-retrieval baseline (DESIGN sections 5.4 and 13, system 1).
+# It gets the bare question with no instruction to decline, so comparing it with the demo
+# pipeline compares the whole pipeline against the bare model, not the prompt alone.
+# The endpoint and key are read from the environment at run time and never written to a run.
+name: llama31-8b-alone
+adapter: openai_chat
+base_url_env: LLM_BASE_URL
+api_key_env: LLM_API_KEY
+model: "@cf/meta/llama-3.1-8b-instruct-fp8"
+prompt_template: "{question}"
+temperature: 0
+seed: 42
+max_tokens: 1024

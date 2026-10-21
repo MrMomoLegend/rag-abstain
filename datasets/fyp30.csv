@@ -1,0 +1,31 @@
+qid,category,expected,question,key_terms,gold_sources,notes
+A01,answerable,answer,What does the Viterbi algorithm compute for a hidden Markov model?,most likely|most probable;sequence|path;hidden state|hidden states,Viterbi algorithm.txt|Hidden Markov model.txt,most likely sequence of hidden states - Viterbi algorithm.pdf + Hidden Markov model.pdf
+A02,answerable,answer,What normal form must a grammar be in before the CYK algorithm can be applied?,Chomsky normal form|CNF,CYK algorithm.txt,Chomsky normal form - CYK algorithm.pdf
+A03,answerable,answer,Which researchers is the CYK algorithm named after?,Cocke;Younger;Kasami,CYK algorithm.txt,Cocke / Younger / Kasami - CYK algorithm.pdf
+A04,answerable,answer,What are the two model architectures used by Word2Vec?,CBOW|continuous bag of words|continuous bag-of-words;skip-gram|skip gram,Word2Vec - Wikipedia.txt|word2vec.txt,CBOW and skip-gram - Word2Vec - Wikipedia.pdf + word2vec.pdf
+A05,answerable,answer,Which two approximate training methods reduce the cost of the softmax in word2vec?,negative sampling;hierarchical softmax,approx-training.txt|Word2Vec - Wikipedia.txt,negative sampling + hierarchical softmax - approx-training.pdf + Word2Vec - Wikipedia.pdf
+A06,answerable,answer,How is tf-idf weighting calculated?,product|multiplied|multiplying|times;term frequency|tf;inverse document frequency|idf,tf–idf.txt,product of term frequency and inverse document frequency - tf–idf.pdf
+A07,answerable,answer,What corpus statistics does GloVe use to learn word vectors?,co-occurrence|co occurrence,glove.txt,global word-word co-occurrence counts - glove.pdf
+A08,answerable,answer,What two tasks is BERT pretrained on?,masked;next sentence prediction|NSP,bert.txt,masked language modelling + next sentence prediction - bert.pdf
+A09,answerable,answer,How does the fastText subword model represent a word?,sum|summed|summing|added;n-gram|n-grams|n gram|n grams,subword-embedding.txt,sum of character n-gram vectors - subword-embedding.pdf
+A10,answerable,answer,Why does the transformer need positional encoding?,self-attention|self attention|attention;order|ordering|permutation,transformer.txt,self-attention has no order information - transformer.pdf
+A11,answerable,answer,How is the accuracy of speech recognition systems usually measured?,word error rate|WER,Speech recognition.txt,word error rate - Speech recognition.pdf
+A12,answerable,answer,What dataset is used for sentiment analysis in the Dive into Deep Learning chapter?,IMDb,sentiment-analysis-and-dataset.txt,IMDb movie reviews - sentiment-analysis-and-dataset.pdf
+A13,answerable,answer,When was GPT-4 released?,14 March|March 14;2023,GPT-4.txt,14 March 2023 - GPT-4.pdf
+A14,answerable,answer,What is retrieval-augmented generation?,retrieve|retrieves|retrieved|retrieving|retrieval;generate|generates|generated|generating|generation;document|documents|external|knowledge|source|sources,Retrieval-augmented generation.txt,retrieve documents then generate grounded answer - Retrieval-augmented generation.pdf
+A15,answerable,answer,What is perplexity and how is it used to evaluate a language model?,exponential|exponentiated|exp|exponent;log-likelihood|log likelihood|log probability|cross-entropy|cross entropy,language-model.txt|Large language model.txt,exp of average negative log-likelihood - language-model.pdf + Large language model.pdf
+B01,out_of_corpus,decline,What is the capital of Brazil?,,,General knowledge - absent (Brazil appears once in an unrelated list)
+B02,out_of_corpus,decline,Who won the 2018 FIFA World Cup?,,,General knowledge - absent
+B03,out_of_corpus,decline,What is the boiling point of water in Fahrenheit?,,,General knowledge - absent
+B04,out_of_corpus,decline,How tall is Mount Kilimanjaro?,,,General knowledge - absent
+B05,out_of_corpus,decline,What year was the Eiffel Tower completed?,,,General knowledge - absent
+B06,out_of_corpus,decline,What is the currency of Japan?,,,General knowledge - absent
+B07,out_of_corpus,decline,Who wrote the novel Wuthering Heights?,,,General knowledge - absent
+B08,out_of_corpus,decline,What is the chemical symbol for tungsten?,,,General knowledge - absent
+B09,out_of_corpus,decline,How many time zones does Russia have?,,,General knowledge - absent
+B10,out_of_corpus,decline,What is the population of Singapore?,,,General knowledge - absent
+B11,out_of_corpus,decline,Who is the chief executive of Google?,,,Topic-adjacent control - Pichai absent
+B12,out_of_corpus,decline,What is the world record for the men's 100 metre sprint?,,,General knowledge - absent
+C01,related_unanswerable,decline,Which Python library should I use to implement a CYK parser?,,,CYK covered; no library recommendation (NLTK absent)
+C02,related_unanswerable,decline,What learning rate should I use when training a word2vec model?,,,word2vec covered; no learning-rate value in any word2vec source
+C03,related_unanswerable,decline,What word error rate does OpenAI's Whisper model achieve on LibriSpeech?,,,speech recognition + WER covered; Whisper and LibriSpeech absent
