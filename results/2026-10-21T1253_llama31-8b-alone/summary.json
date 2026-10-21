@@ -1,0 +1,529 @@
+{
+  "run_id": "2026-10-21T1253_llama31-8b-alone",
+  "created_at": "2026-10-21T12:53:16.763436+05:30",
+  "harness_version": "0.1.0.dev0",
+  "system": {
+    "name": "llama31-8b-alone",
+    "adapter": "openai_chat"
+  },
+  "dataset": {
+    "path": "datasets\\fyp30.csv",
+    "sha256": "d08a7b01dad54a29360e4687c2e32c906f0fe5cefa6e700c8a3a3a516e715fcd"
+  },
+  "repeats": 2,
+  "limit": null,
+  "classifier": "rules",
+  "records": 60,
+  "errors": [],
+  "caveats": [
+    "Baseline caveat: this system is a bare model that got the bare question with no instruction to decline. Comparing it with a grounded pipeline compares the whole pipeline against the bare model, not the prompt alone."
+  ],
+  "abstention": {
+    "n": 30,
+    "n_expected_answer": 15,
+    "n_expected_decline": 15,
+    "errors": 0,
+    "error_qids": [],
+    "outcomes": {
+      "answered": 30,
+      "declined": 0,
+      "hedged": 0
+    },
+    "unsupported_answer_rate": 1.0,
+    "false_decline_rate": 0.0,
+    "hedge_rate": 0.0,
+    "decline_precision": null,
+    "decline_recall": 0.0,
+    "decline_f1": 0.0,
+    "answer_recall": 1.0,
+    "balanced_accuracy": 0.5,
+    "declines_by_stage": {
+      "gate": 0,
+      "model": 0
+    },
+    "notes": {
+      "decline_precision": "the system declined nothing"
+    },
+    "by_category": {
+      "answerable": {
+        "n": 15,
+        "n_expected_answer": 15,
+        "n_expected_decline": 0,
+        "errors": 0,
+        "error_qids": [],
+        "outcomes": {
+          "answered": 15,
+          "declined": 0,
+          "hedged": 0
+        },
+        "unsupported_answer_rate": null,
+        "false_decline_rate": 0.0,
+        "hedge_rate": 0.0,
+        "decline_precision": null,
+        "decline_recall": null,
+        "decline_f1": null,
+        "answer_recall": 1.0,
+        "balanced_accuracy": null,
+        "declines_by_stage": {
+          "gate": 0,
+          "model": 0
+        },
+        "notes": {
+          "decline_recall": "no non-error questions with expected=decline",
+          "balanced_accuracy": "needs non-error questions of both expected classes",
+          "unsupported_answer_rate": "no non-error questions with expected=decline",
+          "decline_precision": "the system declined nothing",
+          "decline_f1": "no declines expected and none made"
+        }
+      },
+      "out_of_corpus": {
+        "n": 12,
+        "n_expected_answer": 0,
+        "n_expected_decline": 12,
+        "errors": 0,
+        "error_qids": [],
+        "outcomes": {
+          "answered": 12,
+          "declined": 0,
+          "hedged": 0
+        },
+        "unsupported_answer_rate": 1.0,
+        "false_decline_rate": null,
+        "hedge_rate": 0.0,
+        "decline_precision": null,
+        "decline_recall": 0.0,
+        "decline_f1": 0.0,
+        "answer_recall": null,
+        "balanced_accuracy": null,
+        "declines_by_stage": {
+          "gate": 0,
+          "model": 0
+        },
+        "notes": {
+          "answer_recall": "no non-error questions with expected=answer",
+          "balanced_accuracy": "needs non-error questions of both expected classes",
+          "false_decline_rate": "no non-error questions with expected=answer",
+          "decline_precision": "the system declined nothing"
+        }
+      },
+      "related_unanswerable": {
+        "n": 3,
+        "n_expected_answer": 0,
+        "n_expected_decline": 3,
+        "errors": 0,
+        "error_qids": [],
+        "outcomes": {
+          "answered": 3,
+          "declined": 0,
+          "hedged": 0
+        },
+        "unsupported_answer_rate": 1.0,
+        "false_decline_rate": null,
+        "hedge_rate": 0.0,
+        "decline_precision": null,
+        "decline_recall": 0.0,
+        "decline_f1": 0.0,
+        "answer_recall": null,
+        "balanced_accuracy": null,
+        "declines_by_stage": {
+          "gate": 0,
+          "model": 0
+        },
+        "notes": {
+          "answer_recall": "no non-error questions with expected=answer",
+          "balanced_accuracy": "needs non-error questions of both expected classes",
+          "false_decline_rate": "no non-error questions with expected=answer",
+          "decline_precision": "the system declined nothing"
+        }
+      }
+    }
+  },
+  "correctness": {
+    "answered_only": {
+      "n": 15,
+      "scored": {
+        "exact_match": 0,
+        "f1": 0,
+        "key_term_hit": 15
+      },
+      "exact_match": null,
+      "f1": null,
+      "key_term_hit": 0.8666666666666667
+    },
+    "all_answerable": {
+      "n": 15,
+      "scored": {
+        "exact_match": 0,
+        "f1": 0,
+        "key_term_hit": 15
+      },
+      "exact_match": null,
+      "f1": null,
+      "key_term_hit": 0.8666666666666667
+    },
+    "notes": {
+      "answered_only.exact_match": "no answered expected=answer records with this score",
+      "all_answerable.exact_match": "no expected=answer records with this score",
+      "answered_only.f1": "no answered expected=answer records with this score",
+      "all_answerable.f1": "no expected=answer records with this score"
+    },
+    "by_category": {
+      "answerable": {
+        "answered_only": {
+          "n": 15,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 15
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": 0.8666666666666667
+        },
+        "all_answerable": {
+          "n": 15,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 15
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": 0.8666666666666667
+        },
+        "notes": {
+          "answered_only.exact_match": "no answered expected=answer records with this score",
+          "all_answerable.exact_match": "no expected=answer records with this score",
+          "answered_only.f1": "no answered expected=answer records with this score",
+          "all_answerable.f1": "no expected=answer records with this score"
+        }
+      },
+      "out_of_corpus": {
+        "answered_only": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "all_answerable": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "notes": {
+          "answered_only.exact_match": "no answered expected=answer records with this score",
+          "all_answerable.exact_match": "no expected=answer records with this score",
+          "answered_only.f1": "no answered expected=answer records with this score",
+          "all_answerable.f1": "no expected=answer records with this score",
+          "answered_only.key_term_hit": "no answered expected=answer records with this score",
+          "all_answerable.key_term_hit": "no expected=answer records with this score"
+        }
+      },
+      "related_unanswerable": {
+        "answered_only": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "all_answerable": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "notes": {
+          "answered_only.exact_match": "no answered expected=answer records with this score",
+          "all_answerable.exact_match": "no expected=answer records with this score",
+          "answered_only.f1": "no answered expected=answer records with this score",
+          "all_answerable.f1": "no expected=answer records with this score",
+          "answered_only.key_term_hit": "no answered expected=answer records with this score",
+          "all_answerable.key_term_hit": "no expected=answer records with this score"
+        }
+      }
+    }
+  },
+  "retrieval": {
+    "n_scored": 0,
+    "n_unscored": 30,
+    "hit_at_1": null,
+    "hit_at_3": null,
+    "hit_at_5": null,
+    "hit_at_10": null,
+    "recall_at_1": null,
+    "recall_at_3": null,
+    "recall_at_5": null,
+    "recall_at_10": null,
+    "mrr": null,
+    "notes": {
+      "hit_at_1": "no non-error records with both gold_sources and returned sources",
+      "hit_at_3": "no non-error records with both gold_sources and returned sources",
+      "hit_at_5": "no non-error records with both gold_sources and returned sources",
+      "hit_at_10": "no non-error records with both gold_sources and returned sources",
+      "recall_at_1": "no non-error records with both gold_sources and returned sources",
+      "recall_at_3": "no non-error records with both gold_sources and returned sources",
+      "recall_at_5": "no non-error records with both gold_sources and returned sources",
+      "recall_at_10": "no non-error records with both gold_sources and returned sources",
+      "mrr": "no non-error records with both gold_sources and returned sources"
+    },
+    "by_category": {
+      "answerable": {
+        "n_scored": 0,
+        "n_unscored": 15,
+        "hit_at_1": null,
+        "hit_at_3": null,
+        "hit_at_5": null,
+        "hit_at_10": null,
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "mrr": null,
+        "notes": {
+          "hit_at_1": "no non-error records with both gold_sources and returned sources",
+          "hit_at_3": "no non-error records with both gold_sources and returned sources",
+          "hit_at_5": "no non-error records with both gold_sources and returned sources",
+          "hit_at_10": "no non-error records with both gold_sources and returned sources",
+          "recall_at_1": "no non-error records with both gold_sources and returned sources",
+          "recall_at_3": "no non-error records with both gold_sources and returned sources",
+          "recall_at_5": "no non-error records with both gold_sources and returned sources",
+          "recall_at_10": "no non-error records with both gold_sources and returned sources",
+          "mrr": "no non-error records with both gold_sources and returned sources"
+        }
+      },
+      "out_of_corpus": {
+        "n_scored": 0,
+        "n_unscored": 12,
+        "hit_at_1": null,
+        "hit_at_3": null,
+        "hit_at_5": null,
+        "hit_at_10": null,
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "mrr": null,
+        "notes": {
+          "hit_at_1": "no non-error records with both gold_sources and returned sources",
+          "hit_at_3": "no non-error records with both gold_sources and returned sources",
+          "hit_at_5": "no non-error records with both gold_sources and returned sources",
+          "hit_at_10": "no non-error records with both gold_sources and returned sources",
+          "recall_at_1": "no non-error records with both gold_sources and returned sources",
+          "recall_at_3": "no non-error records with both gold_sources and returned sources",
+          "recall_at_5": "no non-error records with both gold_sources and returned sources",
+          "recall_at_10": "no non-error records with both gold_sources and returned sources",
+          "mrr": "no non-error records with both gold_sources and returned sources"
+        }
+      },
+      "related_unanswerable": {
+        "n_scored": 0,
+        "n_unscored": 3,
+        "hit_at_1": null,
+        "hit_at_3": null,
+        "hit_at_5": null,
+        "hit_at_10": null,
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "mrr": null,
+        "notes": {
+          "hit_at_1": "no non-error records with both gold_sources and returned sources",
+          "hit_at_3": "no non-error records with both gold_sources and returned sources",
+          "hit_at_5": "no non-error records with both gold_sources and returned sources",
+          "hit_at_10": "no non-error records with both gold_sources and returned sources",
+          "recall_at_1": "no non-error records with both gold_sources and returned sources",
+          "recall_at_3": "no non-error records with both gold_sources and returned sources",
+          "recall_at_5": "no non-error records with both gold_sources and returned sources",
+          "recall_at_10": "no non-error records with both gold_sources and returned sources",
+          "mrr": "no non-error records with both gold_sources and returned sources"
+        }
+      }
+    }
+  },
+  "determinism": {
+    "n_compared": 30,
+    "error_qids": [],
+    "identical_answer_rate": 0.6333333333333333,
+    "outcome_agreement_rate": 1.0,
+    "outcome_flips": [],
+    "notes": {},
+    "by_category": {
+      "answerable": {
+        "n_compared": 15,
+        "error_qids": [],
+        "identical_answer_rate": 0.4666666666666667,
+        "outcome_agreement_rate": 1.0,
+        "outcome_flips": [],
+        "notes": {}
+      },
+      "out_of_corpus": {
+        "n_compared": 12,
+        "error_qids": [],
+        "identical_answer_rate": 1.0,
+        "outcome_agreement_rate": 1.0,
+        "outcome_flips": [],
+        "notes": {}
+      },
+      "related_unanswerable": {
+        "n_compared": 3,
+        "error_qids": [],
+        "identical_answer_rate": 0.0,
+        "outcome_agreement_rate": 1.0,
+        "outcome_flips": [],
+        "notes": {}
+      }
+    }
+  },
+  "cost": {
+    "n_records": 60,
+    "errors": 0,
+    "latency": {
+      "all": {
+        "n": 60,
+        "median_s": 11.964743700053077,
+        "p95_s": 41.551039100042544
+      },
+      "gate": {
+        "n": 0,
+        "median_s": null,
+        "p95_s": null
+      },
+      "model": {
+        "n": 0,
+        "median_s": null,
+        "p95_s": null
+      },
+      "no_decline": {
+        "n": 60,
+        "median_s": 11.964743700053077,
+        "p95_s": 41.551039100042544
+      }
+    },
+    "prompt_tokens_total": 1314,
+    "completion_tokens_total": 15791,
+    "notes": {
+      "latency.gate": "no non-error records with a latency in this group",
+      "latency.model": "no non-error records with a latency in this group"
+    },
+    "by_category": {
+      "answerable": {
+        "n_records": 30,
+        "errors": 0,
+        "latency": {
+          "all": {
+            "n": 30,
+            "median_s": 26.37240664998535,
+            "p95_s": 41.80434269993566
+          },
+          "gate": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          },
+          "model": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          },
+          "no_decline": {
+            "n": 30,
+            "median_s": 26.37240664998535,
+            "p95_s": 41.80434269993566
+          }
+        },
+        "prompt_tokens_total": 682,
+        "completion_tokens_total": 11713,
+        "notes": {
+          "latency.gate": "no non-error records with a latency in this group",
+          "latency.model": "no non-error records with a latency in this group"
+        }
+      },
+      "out_of_corpus": {
+        "n_records": 24,
+        "errors": 0,
+        "latency": {
+          "all": {
+            "n": 24,
+            "median_s": 2.266313350002747,
+            "p95_s": 8.17558789998293
+          },
+          "gate": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          },
+          "model": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          },
+          "no_decline": {
+            "n": 24,
+            "median_s": 2.266313350002747,
+            "p95_s": 8.17558789998293
+          }
+        },
+        "prompt_tokens_total": 480,
+        "completion_tokens_total": 1054,
+        "notes": {
+          "latency.gate": "no non-error records with a latency in this group",
+          "latency.model": "no non-error records with a latency in this group"
+        }
+      },
+      "related_unanswerable": {
+        "n_records": 6,
+        "errors": 0,
+        "latency": {
+          "all": {
+            "n": 6,
+            "median_s": 35.93870744999731,
+            "p95_s": 41.84987320005894
+          },
+          "gate": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          },
+          "model": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          },
+          "no_decline": {
+            "n": 6,
+            "median_s": 35.93870744999731,
+            "p95_s": 41.84987320005894
+          }
+        },
+        "prompt_tokens_total": 152,
+        "completion_tokens_total": 3024,
+        "notes": {
+          "latency.gate": "no non-error records with a latency in this group",
+          "latency.model": "no non-error records with a latency in this group"
+        }
+      }
+    }
+  }
+}

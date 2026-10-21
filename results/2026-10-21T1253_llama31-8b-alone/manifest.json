@@ -1,0 +1,53 @@
+{
+  "run_id": "2026-10-21T1253_llama31-8b-alone",
+  "created_at": "2026-10-21T12:53:16.763436+05:30",
+  "harness_version": "0.1.0.dev0",
+  "system": {
+    "name": "llama31-8b-alone",
+    "adapter": "openai_chat",
+    "base_url_env": "LLM_BASE_URL",
+    "api_key_env": "LLM_API_KEY",
+    "model": "@cf/meta/llama-3.1-8b-instruct-fp8",
+    "prompt_template": "{question}",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 1024
+  },
+  "dataset_path": "datasets\\fyp30.csv",
+  "dataset_sha256": "d08a7b01dad54a29360e4687c2e32c906f0fe5cefa6e700c8a3a3a516e715fcd",
+  "repeats": 2,
+  "limit": null,
+  "classifier": {
+    "name": "rules",
+    "markers": [
+      "do not contain",
+      "does not contain",
+      "doesn't contain",
+      "not in the context",
+      "no information",
+      "cannot answer",
+      "can't answer",
+      "unable to answer",
+      "not provided in the context",
+      "insufficient",
+      "i don't know",
+      "i do not know"
+    ],
+    "continuations": [
+      "however",
+      "but ",
+      "although",
+      "according to",
+      "based on",
+      "that said",
+      "nevertheless",
+      "it appears",
+      "it is mentioned",
+      "it can be inferred",
+      "from the context"
+    ],
+    "hedge_rest_chars": 100,
+    "continuation_window": 80
+  },
+  "python_version": "3.13.5"
+}
