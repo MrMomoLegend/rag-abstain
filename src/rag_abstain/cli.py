@@ -22,6 +22,11 @@ from rag_abstain.runner import RunError, run
 from rag_abstain.sweep import DEFAULT_GRID, SweepError, parse_grid, plot_sweep, sweep_run
 from rag_abstain.sweep import render_markdown as render_sweep
 
+try:
+    from typer import TyperException as CliError  # newer typer bundles its own click
+except ImportError:  # older typer re-exports the separate click package
+    from click import ClickException as CliError
+
 EXIT_OK = 0
 EXIT_USAGE = 1
 EXIT_RUN_ERRORS = 2
@@ -189,7 +194,7 @@ def run_cli(argv: list[str] | None = None) -> int:
     """Run the CLI on `argv` (default: sys.argv) and return the exit code."""
     try:
         result = app(args=argv, standalone_mode=False)
-    except typer.TyperException as exc:
+    except CliError as exc:
         show = getattr(exc, "show", None)
         if callable(show):
             show()

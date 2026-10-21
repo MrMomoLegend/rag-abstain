@@ -13,7 +13,7 @@ requires-python = ">=3.11"
 authors = [{ name = "Mokith Maheshkumar" }]
 dependencies = [
     "pydantic>=2.10",
-    "typer>=0.27",
+    "typer>=0.20",
     "httpx>=0.28",
     "pyyaml>=6",
 ]

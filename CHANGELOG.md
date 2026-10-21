@@ -23,3 +23,5 @@
   the `plot` extra).
 - CLI exit codes: 0 ok, 1 usage or validation error, 2 run finished with error records.
 - Toy system and question set in `examples/`, tests with no network, CI on Python 3.11 to 3.13.
+- `typer>=0.20` instead of `>=0.27`, so the harness installs in the same environment as a
+  pipeline that uses `huggingface-hub` (which needs `typer<0.26`). CI also tests typer 0.20.0 and 0.25.1.

@@ -354,7 +354,7 @@ rag-abstain/
   README.md  CHANGELOG.md  LICENSE (MIT)  .github/workflows/ci.yml
 ```
 
-**Dependencies:** core `pydantic>=2.10`, `typer>=0.27` (it bundles its own click; the CLI exit codes rely on that), `httpx>=0.28`, `pyyaml>=6`. Extras:
+**Dependencies:** core `pydantic>=2.10`, `typer>=0.20` (the floor `huggingface-hub` allows, so the harness installs next to Hugging Face based pipelines; the CLI handles both the newer typer that bundles its own click and the older one that uses the separate `click` package, and CI tests the oldest), `httpx>=0.28`, `pyyaml>=6`. Extras:
 `plot` = `matplotlib`; `dev` = `pytest`, `ruff`. No pandas, no LLM SDKs, no torch in the core.
 Python 3.11+ (CI on 3.11, 3.12, 3.13).
 

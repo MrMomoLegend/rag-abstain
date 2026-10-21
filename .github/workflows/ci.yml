@@ -28,3 +28,20 @@ jobs:
         run: ruff format --check .
       - name: Test
         run: python -m pytest
+
+  old-typer:
+    # Pipelines built on huggingface-hub pin typer<0.26: test the floor and the demo's version.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        typer-version: ["0.20.0", "0.25.1"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: python -m pip install -e ".[dev]" "typer==${{ matrix.typer-version }}"
+      - name: Test
+        run: python -m pytest
