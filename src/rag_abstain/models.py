@@ -99,3 +99,4 @@ class RunManifest(BaseModel):
     limit: int | None = Field(default=None, ge=1)
     classifier: dict[str, Any]
     python_version: str
+    rescored_from: str | None = None  # the run id, for a run re-classified by `rescore`

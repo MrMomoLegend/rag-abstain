@@ -29,3 +29,7 @@
 - `datasets/ext100.csv`: 100 questions on the demo corpus (50 answerable; 50 to decline across
   out-of-database, false presupposition, underspecified and look-answerable categories), with
   `systems/*_ext100.yaml` configs that count clarifying questions as declines.
+- `rule-v2` classifier: `rule-fyp` (the ported FYP classifier, unchanged) plus generic
+  clarification-request and premise-correction patterns.
+- `rag-abstain rescore RUN_DIR --classifier rule-fyp|rule-v2`: re-classify a finished run's
+  stored answers into `RUN_DIR/rescore_<classifier>/`, with no model calls.

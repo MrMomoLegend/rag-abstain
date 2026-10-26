@@ -1,0 +1,98 @@
+{
+  "run_id": "2026-10-26T1641_demo-gate-0.53-ext100+rule-v2",
+  "created_at": "2026-10-26T16:41:50.144788+05:30",
+  "harness_version": "0.1.0.dev0",
+  "system": {
+    "name": "demo-gate-0.53-ext100",
+    "adapter": "python",
+    "target": "rag.pipeline:answer_question",
+    "pythonpath": "../../rag-assistant-demo",
+    "params": {
+      "use_rag": true,
+      "use_threshold": true,
+      "threshold": 0.53
+    },
+    "response_map": "demo",
+    "refusal_text": "The provided documents do not contain this information.",
+    "extra_markers": [
+      "could you clarify",
+      "can you clarify",
+      "please clarify",
+      "could you specify",
+      "can you specify",
+      "please specify",
+      "are you referring to",
+      "do you mean"
+    ]
+  },
+  "dataset_path": "datasets\\ext100.csv",
+  "dataset_sha256": "b17d8d7b7f70d9917e82649260dc91d1cb000a51f41a886dc61c32cbb905d781",
+  "repeats": 2,
+  "limit": null,
+  "classifier": {
+    "name": "rule-v2",
+    "markers": [
+      "do not contain",
+      "does not contain",
+      "doesn't contain",
+      "not in the context",
+      "no information",
+      "cannot answer",
+      "can't answer",
+      "unable to answer",
+      "not provided in the context",
+      "insufficient",
+      "i don't know",
+      "i do not know",
+      "could you clarify",
+      "can you clarify",
+      "please clarify",
+      "could you specify",
+      "can you specify",
+      "please specify",
+      "are you referring to",
+      "do you mean",
+      "the provided documents do not contain this information."
+    ],
+    "continuations": [
+      "however",
+      "but ",
+      "although",
+      "according to",
+      "based on",
+      "that said",
+      "nevertheless",
+      "it appears",
+      "it is mentioned",
+      "it can be inferred",
+      "from the context"
+    ],
+    "hedge_rest_chars": 100,
+    "continuation_window": 80,
+    "clarification_patterns": [
+      "\\b(could|can|would) you (please )?(clarify|specify|elaborate)\\b",
+      "\\bplease (clarify|specify)\\b",
+      "\\b(could|can|would) you (please )?(provide|give|share) (me )?(some |a bit )?(more|additional|further) (context|details|information)\\b",
+      "\\bplease (provide|give|share) (me )?(some )?(more|additional|further) (context|details|information)\\b",
+      "\\b(i|i'd|i would) need (some )?(more|additional|further) (context|details|information)\\b",
+      "\\b(are you|you are|you're) referring to\\b",
+      "\\bwhat do you mean by\\b",
+      "\\bdo you mean\\b",
+      "\\b(it is|it's) (not clear|unclear) (which|what|who)\\b",
+      "\\b(do|did) you have in mind\\b"
+    ],
+    "premise_correction_patterns": [
+      "\\b(the|this|that|your) (question|premise|assumption|claim|statement) (is|seems|appears) (to be )?(incorrect|wrong|mistaken|false|inaccurate|based on)\\b",
+      "\\b(is|are|was|were|does|do|did) (actually|in fact)\\b[^.?!]{0,60}\\bnot\\b",
+      "\\bcontrary to (the|your|what|popular)\\b",
+      "\\bmisconception\\b",
+      "\\bthere (is|was|are|were) no (record|evidence|indication)\\b",
+      "\\b(that|this|it) is not (correct|accurate|true)\\b",
+      "\\bthat's not (correct|accurate|true|right)\\b",
+      "\\bit is not true that\\b",
+      "\\b(there may be|there might be|there seems to be|there is) (a |some )?(confusion|mix-up|misunderstanding|mistake)\\b"
+    ]
+  },
+  "python_version": "3.13.5",
+  "rescored_from": "2026-10-26T1641_demo-gate-0.53-ext100"
+}

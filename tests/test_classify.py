@@ -4,6 +4,8 @@ from rag_abstain.classify import (
     DEFAULT_CONTINUATIONS,
     DEFAULT_REFUSAL_MARKERS,
     RuleClassifier,
+    RuleV2Classifier,
+    make_classifier,
     resolve_outcome,
 )
 from rag_abstain.models import SystemResponse
@@ -173,3 +175,93 @@ def test_empty_answer_is_not_sent_to_classifier() -> None:
             raise AssertionError("classifier called")
 
     assert resolve_outcome(SystemResponse(answer=""), Exploding()) == ("declined", "model")
+
+
+# --- rule-v2: clarification requests and premise corrections --------------------------------
+
+V2 = RuleV2Classifier(refusal_text=REFUSAL)
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        "Which version do you mean?",
+        "Could you please provide more context about the system you are asking about?",
+        "I would need more information. Can you specify the dataset?",
+        "Sorry, which bridge are you referring to?",
+        "Could you clarify what you\u2019re referring to?",
+        "It's not clear which paper you mean. Please clarify.",
+        "Please specify which dataset you mean.",
+    ],
+)
+def test_v2_clarification_request_is_declined(answer: str) -> None:
+    assert RULES.classify(answer) == "answered"
+    assert V2.classify(answer) == "declined"
+
+
+def test_v2_clarification_followed_by_an_answer_is_hedged() -> None:
+    answer = (
+        "Do you mean the first edition? If so, it was printed in 1851 by a small London press "
+        "that also published several travel books and a long series of pamphlets."
+    )
+    assert V2.classify(answer) == "hedged"
+    assert V2.classify("Do you mean the first edition? However, it was printed in 1851.") == (
+        "hedged"
+    )
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        "The premise of the question is incorrect: the bridge opened in 1932.",
+        "The bridge was actually not built by Eiffel; it was designed by Joseph Strauss.",
+        "That is not correct. The paper appeared in 1998, and it described a different method.",
+        "There is no record of the author winning that prize.",
+        "This is a common misconception; the wall cannot be seen from orbit.",
+    ],
+)
+def test_v2_premise_correction_is_declined(answer: str) -> None:
+    assert RULES.classify(answer) == "answered"
+    assert V2.classify(answer) == "declined"
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        "GPT-4 was released on March 14, 2023.",
+        "The algorithm runs in cubic time, not quadratic time.",
+        "Merge sort splits the list in half and merges the sorted halves.",
+    ],
+)
+def test_v2_plain_answers_stay_answered(answer: str) -> None:
+    assert V2.classify(answer) == "answered"
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        "The paper you're referring to is titled Deep Residual Learning for Image Recognition.",
+        "The algorithm you are referring to is called quicksort.\nIt sorts the list in place.",
+        "It is not clear which edition came first, but the 1851 printing is the best known.",
+    ],
+)
+def test_v2_clarification_pattern_in_a_statement_stays_answered(answer: str) -> None:
+    assert V2.classify(answer) == "answered"
+
+
+@pytest.mark.parametrize("answer", ["", REFUSAL, HEDGE, "I don't know."])
+def test_v2_agrees_with_rule_fyp_on_refusals_and_hedges(answer: str) -> None:
+    assert V2.classify(answer) == RULES.classify(answer)
+
+
+def test_make_classifier_names_and_configs() -> None:
+    fyp = make_classifier("rule-fyp", extra_markers=["Do you mean"], refusal_text=REFUSAL)
+    v2 = make_classifier("rule-v2", refusal_text=REFUSAL)
+    assert type(fyp) is RuleClassifier and isinstance(v2, RuleV2Classifier)
+    assert fyp.config()["name"] == "rules"  # rule-fyp keeps the name its runs were recorded with
+    assert "do you mean" in fyp.config()["markers"]
+    assert v2.config()["name"] == "rule-v2"
+    assert v2.config()["markers"] == RULES.config()["markers"]
+    assert v2.config()["clarification_patterns"] and v2.config()["premise_correction_patterns"]
+    with pytest.raises(ValueError, match="unknown classifier"):
+        make_classifier("judge")
