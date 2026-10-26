@@ -32,6 +32,7 @@ class System:
 
     `config` is the YAML as written with literal secrets redacted, safe for the manifest.
     `secrets` holds the values read from the environment, for scrubbing output.
+    `extra_markers` are added to the default rule classifier's refusal markers.
     """
 
     name: str
@@ -40,6 +41,7 @@ class System:
     refusal_text: str | None
     secrets: Secrets
     path: Path
+    extra_markers: tuple[str, ...] = ()
 
     def close(self) -> None:
         """Release the adapter's resources."""
@@ -85,4 +87,5 @@ def load_system(path: str | Path, transport: httpx.BaseTransport | None = None) 
         refusal_text=config.get("refusal_text"),
         secrets=secrets,
         path=path,
+        extra_markers=tuple(config.get("extra_markers") or ()),
     )

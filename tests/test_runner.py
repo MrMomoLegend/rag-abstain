@@ -281,3 +281,15 @@ def test_env_secrets_never_reach_the_run_directory(
     assert "<redacted>" in records_text
     assert result.errors > 0  # the 401s were recorded, scrubbed
     assert all(SECRET not in r.model_dump_json() for r in result.records)
+
+
+def test_system_extra_markers_reach_the_classifier(tmp_path: Path) -> None:
+    dataset = tmp_path / "q.csv"
+    dataset.write_text("qid,expected,question\nU01,decline,How big is it?\n", encoding="utf-8")
+    system = fake_system(lambda q: SystemResponse(answer="Which model are you referring to?"))
+    system.extra_markers = ("are you referring to",)
+
+    result = run(system, dataset, out_dir=tmp_path, now=NOW)
+
+    assert result.records[0].outcome == "declined"
+    assert "are you referring to" in read_manifest(result.run_dir).classifier["markers"]

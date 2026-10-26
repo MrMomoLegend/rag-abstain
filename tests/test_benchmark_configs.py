@@ -1,4 +1,4 @@
-"""The milestone 2 benchmark inputs (datasets/fyp30.csv, systems/*.yaml) load and are wired right.
+"""The benchmark inputs (datasets/*.csv, systems/*.yaml) load and are wired right.
 
 The demo configs import `rag.pipeline` from rag-assistant-demo, which is not available here or in
 CI, so a stub module stands in for it. Nothing calls the network.
@@ -11,6 +11,7 @@ from typing import Any
 
 import httpx
 import pytest
+import yaml
 
 from rag_abstain.adapters import load_system
 from rag_abstain.adapters.openai_chat import OpenAIChatAdapter
@@ -115,3 +116,42 @@ def test_llama_alone_config(monkeypatch: pytest.MonkeyPatch) -> None:
         assert FAKE_KEY not in repr(system.config)
     finally:
         system.close()
+
+
+def test_ext100_dataset() -> None:
+    questions = load_dataset(ROOT / "datasets" / "ext100.csv")
+    assert len(questions) == 100
+    counts: dict[str | None, int] = {}
+    for question in questions:
+        counts[question.category] = counts.get(question.category, 0) + 1
+        assert question.expected == ("answer" if question.category == "answerable" else "decline")
+    assert counts == {
+        "answerable": 50,
+        "out_of_database": 14,
+        "false_presupposition": 14,
+        "underspecified": 10,
+        "look_answerable": 12,
+    }
+    for question in questions:
+        if question.expected == "answer":
+            assert question.references and question.key_terms and question.gold_sources
+        else:
+            assert not question.gold_sources and question.notes
+
+
+@pytest.mark.parametrize("base", ["demo_gate_on", "demo_gate_off", "llama_alone"])
+def test_ext100_configs_add_only_name_and_markers(base: str) -> None:
+    def read(name: str) -> dict[str, Any]:
+        return yaml.safe_load((SYSTEMS / f"{name}.yaml").read_text(encoding="utf-8"))
+
+    original, extended = read(base), read(f"{base}_ext100")
+    markers = extended.pop("extra_markers")
+    assert extended.pop("name") == original.pop("name") + "-ext100"
+    assert extended == original
+    assert "could you clarify" in markers and all(m == m.lower() for m in markers)
+
+
+def test_ext100_demo_config_loads_markers(demo_calls: list[dict[str, Any]]) -> None:
+    system = load_system(SYSTEMS / "demo_gate_on_ext100.yaml")
+    assert system.name == "demo-gate-0.53-ext100"
+    assert "are you referring to" in system.extra_markers

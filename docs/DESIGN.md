@@ -110,6 +110,7 @@ pythonpath: ../rag-assistant-demo     # optional, prepended to sys.path
 params: {use_rag: true, use_threshold: true}
 response_map: demo              # preset name or an explicit mapping (below)
 refusal_text: "The provided documents do not contain this information."
+extra_markers: ["could you clarify"]  # optional, added to the rule classifier's markers
 ```
 
 ### 5.1 Common response shape
@@ -199,7 +200,7 @@ For each response, in order:
 A port of the FYP's `classify()`:
 
 - refusal markers (configurable list; default the FYP's 12 English markers) plus the system's
-  `refusal_text`, matched case-insensitively;
+  `extra_markers` and `refusal_text`, matched case-insensitively;
 - no marker -> `answered`;
 - marker present: take the text after the first "." that follows the marker; if it is longer
   than 100 characters, or one of the continuation phrases ("however", "but ", "although",

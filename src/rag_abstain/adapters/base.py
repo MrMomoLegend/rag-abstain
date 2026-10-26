@@ -40,6 +40,7 @@ class SystemConfig(BaseModel):
     name: str = Field(min_length=1)
     adapter: str
     refusal_text: str | None = None
+    extra_markers: list[str] = []  # added to the rule classifier's refusal markers
 
 
 class Secrets:

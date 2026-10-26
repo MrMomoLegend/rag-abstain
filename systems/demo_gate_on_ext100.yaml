@@ -1,0 +1,23 @@
+# demo_gate_on.yaml for datasets/ext100.csv: the same system, plus clarification markers.
+# rag-assistant-demo with its retrieval-distance gate on at 0.53, the FYP/demo configuration
+# (DESIGN section 13, system 3). Needs a local checkout of rag-assistant-demo next to this repo,
+# its requirements installed in the active environment, and LLM_BASE_URL / LLM_API_KEY set for
+# its generation call. Model, temperature (0) and seed (42) come from the demo's rag/config.py.
+name: demo-gate-0.53-ext100
+adapter: python
+target: rag.pipeline:answer_question
+pythonpath: ../../rag-assistant-demo   # resolved relative to this file
+params: {use_rag: true, use_threshold: true, threshold: 0.53}
+response_map: demo
+refusal_text: "The provided documents do not contain this information."
+# Clarifying questions count as declines: the ideal reply to an underspecified question in
+# datasets/ext100.csv is to ask which model, system or dataset is meant (UAEval4RAG).
+extra_markers:
+  - "could you clarify"
+  - "can you clarify"
+  - "please clarify"
+  - "could you specify"
+  - "can you specify"
+  - "please specify"
+  - "are you referring to"
+  - "do you mean"
