@@ -238,6 +238,14 @@ actually of the SMACS 0723 galaxy cluster, not ..."), which `rule-v2` reads as `
 Regex patterns will also miss phrasings they do not list; the judge classifier with its
 agreement number is the fix for both.
 
+**Label audit, 27 Oct 2026** (`results/2026-10-26T1641_demo-gate-0.53-ext100/rescore_rule-v2`,
+repeat 1): a stratified sample of 10 `answered` and 10 `declined` records, drawn with
+`random.Random(20261027)`, plus every record whose label differs between `rule-fyp` and `rule-v2`
+(none in this run). Each was checked by hand against its question and answer: 0 of 20 labels
+wrong. The gate-on ext100 numbers are good to use. The audit does not cover the Llama-alone
+`rule-v2` labels: the demo declines only with its fixed refusal text, so no `rule-v2` pattern
+fires in this run.
+
 ### 6.2 Judge classifier (after the core)
 
 An OpenAI-compatible model labels each answer `answered` / `declined` / `hedged` with a fixed
