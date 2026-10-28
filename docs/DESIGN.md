@@ -110,6 +110,7 @@ pythonpath: ../rag-assistant-demo     # optional, prepended to sys.path
 params: {use_rag: true, use_threshold: true}
 response_map: demo              # preset name or an explicit mapping (below)
 refusal_text: "The provided documents do not contain this information."
+extra_markers: ["could you clarify"]  # optional, added to the rule classifier's markers
 ```
 
 ### 5.1 Common response shape
@@ -199,7 +200,7 @@ For each response, in order:
 A port of the FYP's `classify()`:
 
 - refusal markers (configurable list; default the FYP's 12 English markers) plus the system's
-  `refusal_text`, matched case-insensitively;
+  `extra_markers` and `refusal_text`, matched case-insensitively;
 - no marker -> `answered`;
 - marker present: take the text after the first "." that follows the marker; if it is longer
   than 100 characters, or one of the continuation phrases ("however", "but ", "although",
@@ -209,6 +210,41 @@ Known limitation, kept visible: an answer followed by a trailing disclaimer ("..
 not contain the specific formula for X.") is read as `declined`. Test case
 `test_answer_then_trailing_disclaimer_is_known_limitation` pins the current behaviour so a fix is a
 deliberate change.
+
+This classifier is `rule-fyp` (recorded in manifests as `rules`, its name before `rule-v2`).
+`rule-v2` runs `rule-fyp` first; when that says `answered`, it also looks for two kinds of reply
+that are the right response to an unanswerable question but contain no refusal marker:
+
+- a **clarification request** ("could you clarify", "which one are you referring to", "do you
+  mean"): `declined`, or `hedged` if an answer follows it (the same length and continuation test
+  as after a refusal marker);
+- a **premise correction** ("the premise is incorrect", "is actually ... not", "there is no
+  record of", "misconception"): `declined`, explanation included.
+
+The patterns are generic phrasings, listed in `classify.py`, and were not fitted to any question
+set's answers. A bare "X, not Y" is deliberately not a pattern (too common in ordinary answers),
+so a correction phrased only that way is still `answered`.
+
+A clarification pattern counts only inside a question (its sentence ends in "?") or a
+please-imperative (its sentence starts with "please"). This rule was added **after** the first
+rescore of the ext100 runs, where "you're referring to" matched statements such as "The paper
+you're referring to is titled ..." in 8 Llama-alone records (A06, A21, A25, A26, both repeats).
+The pattern list itself was not changed. Because the rule was written after seeing ext100
+answers, `rule-v2` numbers on ext100 are not a held-out evaluation of the classifier.
+
+Known limitation, kept visible: the premise pattern "is actually ... not" also matches an answer
+that corrects some other error while answering (ext100 A25, Llama alone: "the first image was
+actually of the SMACS 0723 galaxy cluster, not ..."), which `rule-v2` reads as `declined`.
+Regex patterns will also miss phrasings they do not list; the judge classifier with its
+agreement number is the fix for both.
+
+**Label audit, 27 Oct 2026** (`results/2026-10-26T1641_demo-gate-0.53-ext100/rescore_rule-v2`,
+repeat 1): a stratified sample of 10 `answered` and 10 `declined` records, drawn with
+`random.Random(20261027)`, plus every record whose label differs between `rule-fyp` and `rule-v2`
+(none in this run). Each was checked by hand against its question and answer: 0 of 20 labels
+wrong. The gate-on ext100 numbers are good to use. The audit does not cover the Llama-alone
+`rule-v2` labels: the demo declines only with its fixed refusal text, so no `rule-v2` pattern
+fires in this run.
 
 ### 6.2 Judge classifier (after the core)
 
@@ -300,6 +336,11 @@ runs/2026-10-19T1530_demo-gate-0.53/
 - **Compare:** `rag-abstain compare <runA> <runB>` prints metric deltas and every question whose
   outcome changed, with both answers truncated to 200 characters. This replaces hand-written
   parity reports.
+- **Rescore:** `rag-abstain rescore <run_dir> --classifier rule-fyp|rule-v2` re-classifies the
+  stored answers (latest record per pair) with the system's markers from the manifest and writes
+  `<run_dir>/rescore_<classifier>/` as a run directory of its own (manifest with `rescored_from`,
+  records, summary, report). No system is called; scores are kept, since they depend only on the
+  answer. The original files are not touched, and `compare` works between the two directories.
 
 ## 10. CLI
 
@@ -310,6 +351,7 @@ rag-abstain run --system SYSTEM.yaml --dataset DATASET [--repeats 1] [--workers 
 rag-abstain report RUN_DIR [--format md|json]
 rag-abstain compare RUN_A RUN_B [--format md|json]
 rag-abstain sweep RUN_DIR [--grid 0.20:1.20:0.05] [--plot out.png] [--format md|json]
+rag-abstain rescore RUN_DIR --classifier rule-fyp|rule-v2
 rag-abstain agreement RUN_DIR [--human labels.csv]          (after the core)
 ```
 
@@ -330,7 +372,7 @@ rag-abstain/
       http.py
       openai_chat.py
       mapping.py        response_map resolution + presets
-    classify.py         RuleClassifier (port), JudgeClassifier (later)
+    classify.py         RuleClassifier (rule-fyp, port), RuleV2Classifier, JudgeClassifier (later)
     metrics/
       abstention.py
       correctness.py    normalise, exact_match, f1, key_term_hit
@@ -340,6 +382,7 @@ rag-abstain/
     runner.py           run loop, repeats, resume, workers, append-only writer
     sweep.py
     compare.py
+    rescore.py          re-classify a finished run offline
     report.py           Markdown + JSON rendering
     cli.py              typer app
   tests/                one test module per source module; fixtures in tests/fixtures/

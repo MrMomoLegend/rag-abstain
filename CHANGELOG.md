@@ -25,3 +25,11 @@
 - Toy system and question set in `examples/`, tests with no network, CI on Python 3.11 to 3.13.
 - `typer>=0.20` instead of `>=0.27`, so the harness installs in the same environment as a
   pipeline that uses `huggingface-hub` (which needs `typer<0.26`). CI also tests typer 0.20.0 and 0.25.1.
+- `extra_markers` in a system YAML, added to the rule classifier's refusal markers.
+- `datasets/ext100.csv`: 100 questions on the demo corpus (50 answerable; 50 to decline across
+  out-of-database, false presupposition, underspecified and look-answerable categories), with
+  `systems/*_ext100.yaml` configs that count clarifying questions as declines.
+- `rule-v2` classifier: `rule-fyp` (the ported FYP classifier, unchanged) plus generic
+  clarification-request and premise-correction patterns.
+- `rag-abstain rescore RUN_DIR --classifier rule-fyp|rule-v2`: re-classify a finished run's
+  stored answers into `RUN_DIR/rescore_<classifier>/`, with no model calls.

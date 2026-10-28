@@ -8,7 +8,7 @@ so that 2 always means error records.
 import sys
 from enum import StrEnum
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 import typer
 
@@ -18,6 +18,7 @@ from rag_abstain.compare import compare_runs
 from rag_abstain.compare import render_markdown as render_compare
 from rag_abstain.dataset import DatasetError, validate_dataset
 from rag_abstain.report import REPORT_FILE, fmt, render_json, render_markdown, write_reports
+from rag_abstain.rescore import rescore
 from rag_abstain.runner import RunError, run
 from rag_abstain.sweep import DEFAULT_GRID, SweepError, parse_grid, plot_sweep, sweep_run
 from rag_abstain.sweep import render_markdown as render_sweep
@@ -45,6 +46,13 @@ class Format(StrEnum):
     json = "json"
 
 
+class ClassifierName(StrEnum):
+    """Outcome classifiers `rescore` can apply."""
+
+    rule_fyp = "rule-fyp"
+    rule_v2 = "rule-v2"
+
+
 RunDir = Annotated[Path, typer.Argument(exists=True, file_okay=False, help="A run directory.")]
 FormatOption = Annotated[Format, typer.Option("--format", help="Output format.")]
 
@@ -53,6 +61,16 @@ def fail(message: str) -> typer.Exit:
     """Print an error to stderr and return the exit for a usage or validation error."""
     typer.echo(f"Error: {message}", err=True)
     return typer.Exit(EXIT_USAGE)
+
+
+def echo_headline(abstention: dict[str, Any]) -> None:
+    """Print the four headline abstention rates on one line."""
+    typer.echo(
+        f"Unsupported answer rate: {fmt(abstention['unsupported_answer_rate'])}  "
+        f"False decline rate: {fmt(abstention['false_decline_rate'])}  "
+        f"Hedge rate: {fmt(abstention['hedge_rate'])}  "
+        f"Balanced accuracy: {fmt(abstention['balanced_accuracy'])}"
+    )
 
 
 @app.callback()
@@ -123,18 +141,12 @@ def run_command(
         loaded.close()
 
     summary = write_reports(result.run_dir)
-    abstention = summary["abstention"]
     typer.echo(f"Run: {result.run_dir}")
     typer.echo(
         f"Records: {result.new} new ({result.retried} retried), {result.skipped} skipped; "
         f"errors: {result.errors}"
     )
-    typer.echo(
-        f"Unsupported answer rate: {fmt(abstention['unsupported_answer_rate'])}  "
-        f"False decline rate: {fmt(abstention['false_decline_rate'])}  "
-        f"Hedge rate: {fmt(abstention['hedge_rate'])}  "
-        f"Balanced accuracy: {fmt(abstention['balanced_accuracy'])}"
-    )
+    echo_headline(summary["abstention"])
     for caveat in summary["caveats"]:
         typer.echo(caveat)
     typer.echo(f"Report: {result.run_dir / REPORT_FILE}")
@@ -155,6 +167,23 @@ def report_command(run_dir: RunDir, format: FormatOption = Format.md) -> None:
     except (RunError, ValueError) as exc:
         raise fail(str(exc)) from exc
     typer.echo(render_json(summary) if format is Format.json else render_markdown(summary))
+
+
+@app.command("rescore")
+def rescore_command(
+    run_dir: RunDir,
+    classifier: Annotated[
+        ClassifierName, typer.Option("--classifier", help="Classifier to re-classify with.")
+    ],
+) -> None:
+    """Re-classify a run's stored answers into RUN_DIR/rescore_<classifier>/ (no model calls)."""
+    try:
+        out, summary = rescore(run_dir, classifier.value)
+    except (RunError, ValueError) as exc:
+        raise fail(str(exc)) from exc
+    typer.echo(f"Rescored: {out}")
+    echo_headline(summary["abstention"])
+    typer.echo(f"Report: {out / REPORT_FILE}")
 
 
 @app.command("compare")

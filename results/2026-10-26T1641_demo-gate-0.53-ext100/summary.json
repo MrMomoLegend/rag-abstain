@@ -1,0 +1,742 @@
+{
+  "run_id": "2026-10-26T1641_demo-gate-0.53-ext100",
+  "created_at": "2026-10-26T16:41:50.144788+05:30",
+  "harness_version": "0.1.0.dev0",
+  "system": {
+    "name": "demo-gate-0.53-ext100",
+    "adapter": "python"
+  },
+  "dataset": {
+    "path": "datasets\\ext100.csv",
+    "sha256": "b17d8d7b7f70d9917e82649260dc91d1cb000a51f41a886dc61c32cbb905d781"
+  },
+  "repeats": 2,
+  "limit": null,
+  "classifier": "rules",
+  "records": 200,
+  "errors": [],
+  "caveats": [],
+  "abstention": {
+    "n": 100,
+    "n_expected_answer": 50,
+    "n_expected_decline": 50,
+    "errors": 0,
+    "error_qids": [],
+    "outcomes": {
+      "answered": 45,
+      "declined": 55,
+      "hedged": 0
+    },
+    "unsupported_answer_rate": 0.14,
+    "false_decline_rate": 0.24,
+    "hedge_rate": 0.0,
+    "decline_precision": 0.7818181818181819,
+    "decline_recall": 0.86,
+    "decline_f1": 0.819047619047619,
+    "answer_recall": 0.76,
+    "balanced_accuracy": 0.81,
+    "declines_by_stage": {
+      "gate": 16,
+      "model": 39
+    },
+    "notes": {},
+    "by_category": {
+      "answerable": {
+        "n": 50,
+        "n_expected_answer": 50,
+        "n_expected_decline": 0,
+        "errors": 0,
+        "error_qids": [],
+        "outcomes": {
+          "answered": 38,
+          "declined": 12,
+          "hedged": 0
+        },
+        "unsupported_answer_rate": null,
+        "false_decline_rate": 0.24,
+        "hedge_rate": 0.0,
+        "decline_precision": 0.0,
+        "decline_recall": null,
+        "decline_f1": 0.0,
+        "answer_recall": 0.76,
+        "balanced_accuracy": null,
+        "declines_by_stage": {
+          "gate": 1,
+          "model": 11
+        },
+        "notes": {
+          "decline_recall": "no non-error questions with expected=decline",
+          "balanced_accuracy": "needs non-error questions of both expected classes",
+          "unsupported_answer_rate": "no non-error questions with expected=decline"
+        }
+      },
+      "false_presupposition": {
+        "n": 14,
+        "n_expected_answer": 0,
+        "n_expected_decline": 14,
+        "errors": 0,
+        "error_qids": [],
+        "outcomes": {
+          "answered": 1,
+          "declined": 13,
+          "hedged": 0
+        },
+        "unsupported_answer_rate": 0.07142857142857142,
+        "false_decline_rate": null,
+        "hedge_rate": 0.0,
+        "decline_precision": 1.0,
+        "decline_recall": 0.9285714285714286,
+        "decline_f1": 0.9629629629629629,
+        "answer_recall": null,
+        "balanced_accuracy": null,
+        "declines_by_stage": {
+          "gate": 0,
+          "model": 13
+        },
+        "notes": {
+          "answer_recall": "no non-error questions with expected=answer",
+          "balanced_accuracy": "needs non-error questions of both expected classes",
+          "false_decline_rate": "no non-error questions with expected=answer"
+        }
+      },
+      "look_answerable": {
+        "n": 12,
+        "n_expected_answer": 0,
+        "n_expected_decline": 12,
+        "errors": 0,
+        "error_qids": [],
+        "outcomes": {
+          "answered": 0,
+          "declined": 12,
+          "hedged": 0
+        },
+        "unsupported_answer_rate": 0.0,
+        "false_decline_rate": null,
+        "hedge_rate": 0.0,
+        "decline_precision": 1.0,
+        "decline_recall": 1.0,
+        "decline_f1": 1.0,
+        "answer_recall": null,
+        "balanced_accuracy": null,
+        "declines_by_stage": {
+          "gate": 3,
+          "model": 9
+        },
+        "notes": {
+          "answer_recall": "no non-error questions with expected=answer",
+          "balanced_accuracy": "needs non-error questions of both expected classes",
+          "false_decline_rate": "no non-error questions with expected=answer"
+        }
+      },
+      "out_of_database": {
+        "n": 14,
+        "n_expected_answer": 0,
+        "n_expected_decline": 14,
+        "errors": 0,
+        "error_qids": [],
+        "outcomes": {
+          "answered": 0,
+          "declined": 14,
+          "hedged": 0
+        },
+        "unsupported_answer_rate": 0.0,
+        "false_decline_rate": null,
+        "hedge_rate": 0.0,
+        "decline_precision": 1.0,
+        "decline_recall": 1.0,
+        "decline_f1": 1.0,
+        "answer_recall": null,
+        "balanced_accuracy": null,
+        "declines_by_stage": {
+          "gate": 9,
+          "model": 5
+        },
+        "notes": {
+          "answer_recall": "no non-error questions with expected=answer",
+          "balanced_accuracy": "needs non-error questions of both expected classes",
+          "false_decline_rate": "no non-error questions with expected=answer"
+        }
+      },
+      "underspecified": {
+        "n": 10,
+        "n_expected_answer": 0,
+        "n_expected_decline": 10,
+        "errors": 0,
+        "error_qids": [],
+        "outcomes": {
+          "answered": 6,
+          "declined": 4,
+          "hedged": 0
+        },
+        "unsupported_answer_rate": 0.6,
+        "false_decline_rate": null,
+        "hedge_rate": 0.0,
+        "decline_precision": 1.0,
+        "decline_recall": 0.4,
+        "decline_f1": 0.5714285714285714,
+        "answer_recall": null,
+        "balanced_accuracy": null,
+        "declines_by_stage": {
+          "gate": 3,
+          "model": 1
+        },
+        "notes": {
+          "answer_recall": "no non-error questions with expected=answer",
+          "balanced_accuracy": "needs non-error questions of both expected classes",
+          "false_decline_rate": "no non-error questions with expected=answer"
+        }
+      }
+    }
+  },
+  "correctness": {
+    "answered_only": {
+      "n": 38,
+      "scored": {
+        "exact_match": 38,
+        "f1": 38,
+        "key_term_hit": 38
+      },
+      "exact_match": 0.2631578947368421,
+      "f1": 0.6471808960791571,
+      "key_term_hit": 0.9210526315789473
+    },
+    "all_answerable": {
+      "n": 50,
+      "scored": {
+        "exact_match": 50,
+        "f1": 50,
+        "key_term_hit": 50
+      },
+      "exact_match": 0.2,
+      "f1": 0.49185748102015936,
+      "key_term_hit": 0.7
+    },
+    "notes": {},
+    "by_category": {
+      "answerable": {
+        "answered_only": {
+          "n": 38,
+          "scored": {
+            "exact_match": 38,
+            "f1": 38,
+            "key_term_hit": 38
+          },
+          "exact_match": 0.2631578947368421,
+          "f1": 0.6471808960791571,
+          "key_term_hit": 0.9210526315789473
+        },
+        "all_answerable": {
+          "n": 50,
+          "scored": {
+            "exact_match": 50,
+            "f1": 50,
+            "key_term_hit": 50
+          },
+          "exact_match": 0.2,
+          "f1": 0.49185748102015936,
+          "key_term_hit": 0.7
+        },
+        "notes": {}
+      },
+      "false_presupposition": {
+        "answered_only": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "all_answerable": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "notes": {
+          "answered_only.exact_match": "no answered expected=answer records with this score",
+          "all_answerable.exact_match": "no expected=answer records with this score",
+          "answered_only.f1": "no answered expected=answer records with this score",
+          "all_answerable.f1": "no expected=answer records with this score",
+          "answered_only.key_term_hit": "no answered expected=answer records with this score",
+          "all_answerable.key_term_hit": "no expected=answer records with this score"
+        }
+      },
+      "look_answerable": {
+        "answered_only": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "all_answerable": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "notes": {
+          "answered_only.exact_match": "no answered expected=answer records with this score",
+          "all_answerable.exact_match": "no expected=answer records with this score",
+          "answered_only.f1": "no answered expected=answer records with this score",
+          "all_answerable.f1": "no expected=answer records with this score",
+          "answered_only.key_term_hit": "no answered expected=answer records with this score",
+          "all_answerable.key_term_hit": "no expected=answer records with this score"
+        }
+      },
+      "out_of_database": {
+        "answered_only": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "all_answerable": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "notes": {
+          "answered_only.exact_match": "no answered expected=answer records with this score",
+          "all_answerable.exact_match": "no expected=answer records with this score",
+          "answered_only.f1": "no answered expected=answer records with this score",
+          "all_answerable.f1": "no expected=answer records with this score",
+          "answered_only.key_term_hit": "no answered expected=answer records with this score",
+          "all_answerable.key_term_hit": "no expected=answer records with this score"
+        }
+      },
+      "underspecified": {
+        "answered_only": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "all_answerable": {
+          "n": 0,
+          "scored": {
+            "exact_match": 0,
+            "f1": 0,
+            "key_term_hit": 0
+          },
+          "exact_match": null,
+          "f1": null,
+          "key_term_hit": null
+        },
+        "notes": {
+          "answered_only.exact_match": "no answered expected=answer records with this score",
+          "all_answerable.exact_match": "no expected=answer records with this score",
+          "answered_only.f1": "no answered expected=answer records with this score",
+          "all_answerable.f1": "no expected=answer records with this score",
+          "answered_only.key_term_hit": "no answered expected=answer records with this score",
+          "all_answerable.key_term_hit": "no expected=answer records with this score"
+        }
+      }
+    }
+  },
+  "retrieval": {
+    "n_scored": 50,
+    "n_unscored": 50,
+    "hit_at_1": 0.9,
+    "hit_at_3": 0.98,
+    "hit_at_5": 0.98,
+    "hit_at_10": 0.98,
+    "recall_at_1": 0.9,
+    "recall_at_3": 0.98,
+    "recall_at_5": 0.98,
+    "recall_at_10": 0.98,
+    "mrr": 0.9333333333333332,
+    "notes": {},
+    "by_category": {
+      "answerable": {
+        "n_scored": 50,
+        "n_unscored": 0,
+        "hit_at_1": 0.9,
+        "hit_at_3": 0.98,
+        "hit_at_5": 0.98,
+        "hit_at_10": 0.98,
+        "recall_at_1": 0.9,
+        "recall_at_3": 0.98,
+        "recall_at_5": 0.98,
+        "recall_at_10": 0.98,
+        "mrr": 0.9333333333333332,
+        "notes": {}
+      },
+      "false_presupposition": {
+        "n_scored": 0,
+        "n_unscored": 14,
+        "hit_at_1": null,
+        "hit_at_3": null,
+        "hit_at_5": null,
+        "hit_at_10": null,
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "mrr": null,
+        "notes": {
+          "hit_at_1": "no non-error records with both gold_sources and returned sources",
+          "hit_at_3": "no non-error records with both gold_sources and returned sources",
+          "hit_at_5": "no non-error records with both gold_sources and returned sources",
+          "hit_at_10": "no non-error records with both gold_sources and returned sources",
+          "recall_at_1": "no non-error records with both gold_sources and returned sources",
+          "recall_at_3": "no non-error records with both gold_sources and returned sources",
+          "recall_at_5": "no non-error records with both gold_sources and returned sources",
+          "recall_at_10": "no non-error records with both gold_sources and returned sources",
+          "mrr": "no non-error records with both gold_sources and returned sources"
+        }
+      },
+      "look_answerable": {
+        "n_scored": 0,
+        "n_unscored": 12,
+        "hit_at_1": null,
+        "hit_at_3": null,
+        "hit_at_5": null,
+        "hit_at_10": null,
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "mrr": null,
+        "notes": {
+          "hit_at_1": "no non-error records with both gold_sources and returned sources",
+          "hit_at_3": "no non-error records with both gold_sources and returned sources",
+          "hit_at_5": "no non-error records with both gold_sources and returned sources",
+          "hit_at_10": "no non-error records with both gold_sources and returned sources",
+          "recall_at_1": "no non-error records with both gold_sources and returned sources",
+          "recall_at_3": "no non-error records with both gold_sources and returned sources",
+          "recall_at_5": "no non-error records with both gold_sources and returned sources",
+          "recall_at_10": "no non-error records with both gold_sources and returned sources",
+          "mrr": "no non-error records with both gold_sources and returned sources"
+        }
+      },
+      "out_of_database": {
+        "n_scored": 0,
+        "n_unscored": 14,
+        "hit_at_1": null,
+        "hit_at_3": null,
+        "hit_at_5": null,
+        "hit_at_10": null,
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "mrr": null,
+        "notes": {
+          "hit_at_1": "no non-error records with both gold_sources and returned sources",
+          "hit_at_3": "no non-error records with both gold_sources and returned sources",
+          "hit_at_5": "no non-error records with both gold_sources and returned sources",
+          "hit_at_10": "no non-error records with both gold_sources and returned sources",
+          "recall_at_1": "no non-error records with both gold_sources and returned sources",
+          "recall_at_3": "no non-error records with both gold_sources and returned sources",
+          "recall_at_5": "no non-error records with both gold_sources and returned sources",
+          "recall_at_10": "no non-error records with both gold_sources and returned sources",
+          "mrr": "no non-error records with both gold_sources and returned sources"
+        }
+      },
+      "underspecified": {
+        "n_scored": 0,
+        "n_unscored": 10,
+        "hit_at_1": null,
+        "hit_at_3": null,
+        "hit_at_5": null,
+        "hit_at_10": null,
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "recall_at_10": null,
+        "mrr": null,
+        "notes": {
+          "hit_at_1": "no non-error records with both gold_sources and returned sources",
+          "hit_at_3": "no non-error records with both gold_sources and returned sources",
+          "hit_at_5": "no non-error records with both gold_sources and returned sources",
+          "hit_at_10": "no non-error records with both gold_sources and returned sources",
+          "recall_at_1": "no non-error records with both gold_sources and returned sources",
+          "recall_at_3": "no non-error records with both gold_sources and returned sources",
+          "recall_at_5": "no non-error records with both gold_sources and returned sources",
+          "recall_at_10": "no non-error records with both gold_sources and returned sources",
+          "mrr": "no non-error records with both gold_sources and returned sources"
+        }
+      }
+    }
+  },
+  "determinism": {
+    "n_compared": 100,
+    "error_qids": [],
+    "identical_answer_rate": 0.98,
+    "outcome_agreement_rate": 1.0,
+    "outcome_flips": [],
+    "notes": {},
+    "by_category": {
+      "answerable": {
+        "n_compared": 50,
+        "error_qids": [],
+        "identical_answer_rate": 0.96,
+        "outcome_agreement_rate": 1.0,
+        "outcome_flips": [],
+        "notes": {}
+      },
+      "false_presupposition": {
+        "n_compared": 14,
+        "error_qids": [],
+        "identical_answer_rate": 1.0,
+        "outcome_agreement_rate": 1.0,
+        "outcome_flips": [],
+        "notes": {}
+      },
+      "look_answerable": {
+        "n_compared": 12,
+        "error_qids": [],
+        "identical_answer_rate": 1.0,
+        "outcome_agreement_rate": 1.0,
+        "outcome_flips": [],
+        "notes": {}
+      },
+      "out_of_database": {
+        "n_compared": 14,
+        "error_qids": [],
+        "identical_answer_rate": 1.0,
+        "outcome_agreement_rate": 1.0,
+        "outcome_flips": [],
+        "notes": {}
+      },
+      "underspecified": {
+        "n_compared": 10,
+        "error_qids": [],
+        "identical_answer_rate": 1.0,
+        "outcome_agreement_rate": 1.0,
+        "outcome_flips": [],
+        "notes": {}
+      }
+    }
+  },
+  "cost": {
+    "n_records": 200,
+    "errors": 0,
+    "latency": {
+      "all": {
+        "n": 200,
+        "median_s": 1.2275,
+        "p95_s": 3.335
+      },
+      "gate": {
+        "n": 32,
+        "median_s": 0.0165,
+        "p95_s": 0.025
+      },
+      "model": {
+        "n": 78,
+        "median_s": 1.2000000000000002,
+        "p95_s": 2.147
+      },
+      "no_decline": {
+        "n": 90,
+        "median_s": 1.8624999999999998,
+        "p95_s": 4.152
+      }
+    },
+    "prompt_tokens_total": 197820,
+    "completion_tokens_total": 2699,
+    "notes": {
+      "prompt_tokens_total": "32 record(s) did not report it",
+      "completion_tokens_total": "32 record(s) did not report it"
+    },
+    "by_category": {
+      "answerable": {
+        "n_records": 100,
+        "errors": 0,
+        "latency": {
+          "all": {
+            "n": 100,
+            "median_s": 1.5625,
+            "p95_s": 4.101
+          },
+          "gate": {
+            "n": 2,
+            "median_s": 0.015,
+            "p95_s": 0.022
+          },
+          "model": {
+            "n": 22,
+            "median_s": 1.1345,
+            "p95_s": 1.817
+          },
+          "no_decline": {
+            "n": 76,
+            "median_s": 1.9104999999999999,
+            "p95_s": 4.534
+          }
+        },
+        "prompt_tokens_total": 117316,
+        "completion_tokens_total": 1843,
+        "notes": {
+          "prompt_tokens_total": "2 record(s) did not report it",
+          "completion_tokens_total": "2 record(s) did not report it"
+        }
+      },
+      "false_presupposition": {
+        "n_records": 28,
+        "errors": 0,
+        "latency": {
+          "all": {
+            "n": 28,
+            "median_s": 1.1844999999999999,
+            "p95_s": 2.973
+          },
+          "gate": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          },
+          "model": {
+            "n": 26,
+            "median_s": 1.1629999999999998,
+            "p95_s": 2.149
+          },
+          "no_decline": {
+            "n": 2,
+            "median_s": 3.1399999999999997,
+            "p95_s": 3.307
+          }
+        },
+        "prompt_tokens_total": 33172,
+        "completion_tokens_total": 342,
+        "notes": {
+          "latency.gate": "no non-error records with a latency in this group"
+        }
+      },
+      "look_answerable": {
+        "n_records": 24,
+        "errors": 0,
+        "latency": {
+          "all": {
+            "n": 24,
+            "median_s": 1.2255,
+            "p95_s": 1.499
+          },
+          "gate": {
+            "n": 6,
+            "median_s": 0.013,
+            "p95_s": 0.028
+          },
+          "model": {
+            "n": 18,
+            "median_s": 1.2785,
+            "p95_s": 1.612
+          },
+          "no_decline": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          }
+        },
+        "prompt_tokens_total": 22274,
+        "completion_tokens_total": 180,
+        "notes": {
+          "latency.no_decline": "no non-error records with a latency in this group",
+          "prompt_tokens_total": "6 record(s) did not report it",
+          "completion_tokens_total": "6 record(s) did not report it"
+        }
+      },
+      "out_of_database": {
+        "n_records": 28,
+        "errors": 0,
+        "latency": {
+          "all": {
+            "n": 28,
+            "median_s": 0.0205,
+            "p95_s": 1.345
+          },
+          "gate": {
+            "n": 18,
+            "median_s": 0.0175,
+            "p95_s": 0.025
+          },
+          "model": {
+            "n": 10,
+            "median_s": 1.2155,
+            "p95_s": 2.37
+          },
+          "no_decline": {
+            "n": 0,
+            "median_s": null,
+            "p95_s": null
+          }
+        },
+        "prompt_tokens_total": 11450,
+        "completion_tokens_total": 100,
+        "notes": {
+          "latency.no_decline": "no non-error records with a latency in this group",
+          "prompt_tokens_total": "18 record(s) did not report it",
+          "completion_tokens_total": "18 record(s) did not report it"
+        }
+      },
+      "underspecified": {
+        "n_records": 20,
+        "errors": 0,
+        "latency": {
+          "all": {
+            "n": 20,
+            "median_s": 0.992,
+            "p95_s": 3.5
+          },
+          "gate": {
+            "n": 6,
+            "median_s": 0.014,
+            "p95_s": 0.022
+          },
+          "model": {
+            "n": 2,
+            "median_s": 1.0995,
+            "p95_s": 1.242
+          },
+          "no_decline": {
+            "n": 12,
+            "median_s": 1.1395,
+            "p95_s": 3.831
+          }
+        },
+        "prompt_tokens_total": 13608,
+        "completion_tokens_total": 234,
+        "notes": {
+          "prompt_tokens_total": "6 record(s) did not report it",
+          "completion_tokens_total": "6 record(s) did not report it"
+        }
+      }
+    }
+  }
+}

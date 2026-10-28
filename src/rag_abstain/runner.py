@@ -217,7 +217,8 @@ def run(
     that already have a non-error result and retrying pairs whose latest record is an error;
     `repeats` then defaults to the run's and may only grow, and the system, dataset and
     classifier must match the manifest. `workers` > 1 asks questions in parallel
-    threads. The default classifier is RuleClassifier with the system's refusal_text.
+    threads. The default classifier is RuleClassifier with the system's extra_markers and
+    refusal_text.
     The caller owns `system` and closes it.
     """
     if workers < 1:
@@ -229,7 +230,9 @@ def run(
 
     questions = load_dataset(dataset_path)[:limit]
     dataset_sha = sha256_file(dataset_path)
-    classifier = classifier or RuleClassifier(refusal_text=system.refusal_text)
+    classifier = classifier or RuleClassifier(
+        extra_markers=system.extra_markers, refusal_text=system.refusal_text
+    )
     classifier_config = classifier.config()
 
     if resume is not None:
